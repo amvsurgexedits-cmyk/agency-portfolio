@@ -38,13 +38,13 @@ const Navbar: React.FC = () => {
                 <div className="container h-full flex items-center justify-between">
                     <Link to="/" className="flex items-center space-x-3 group">
                         <img src="/logo.svg" alt="Fraimiix Logo" className="w-8 h-8 group-hover:scale-110 transition-transform duration-300" />
-                        <span className="text-[24px] font-[SpaceGrotesk] font-bold text-white tracking-widest uppercase">
-                            FRAIMIIX STUDIOS
+                        <span className="text-[18px] sm:text-[20px] md:text-[24px] font-[SpaceGrotesk] font-bold text-white tracking-widest uppercase truncate max-w-[200px] sm:max-w-none">
+                            FRAIMIIX <span className="hidden sm:inline">STUDIOS</span>
                         </span>
                     </Link>
 
                     {/* Desktop Nav Links */}
-                    <ul className="hidden md:flex items-center space-x-8">
+                    <ul className="hidden lg:flex items-center space-x-8">
                         {navLinks.map((link) => {
                             const isActive = location.pathname === link.path;
                             return (
@@ -62,13 +62,13 @@ const Navbar: React.FC = () => {
                     </ul>
 
                     {/* CTA */}
-                    <div className="hidden md:block">
+                    <div className="hidden lg:block">
                         <Button variant="ghost" as="a" href="/contact">Get a Free Quote</Button>
                     </div>
 
                     {/* Mobile Menu Toggle */}
                     <button
-                        className="md:hidden text-[#F0F0F0] z-[110] relative p-2"
+                        className="lg:hidden text-[#F0F0F0] z-[110] relative p-2"
                         onClick={() => setIsOpen(!isOpen)}
                         aria-label="Toggle menu"
                     >
@@ -79,7 +79,7 @@ const Navbar: React.FC = () => {
 
             {/* Mobile Menu Overlay */}
             <div
-                className={`fixed inset-0 bg-[#0C0C0C] z-[90] md:hidden transition-all duration-500 ease-in-out ${isOpen ? 'opacity-100 pointer-events-auto visible' : 'opacity-0 pointer-events-none invisible'
+                className={`fixed inset-0 bg-[#0C0C0C] z-[90] lg:hidden transition-all duration-500 ease-in-out ${isOpen ? 'opacity-100 pointer-events-auto visible' : 'opacity-0 pointer-events-none invisible'
                     }`}
             >
                 <div className="flex flex-col h-full items-center justify-center space-y-8 p-12">
