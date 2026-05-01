@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../components/Button';
 import { Mail, Instagram, MapPin } from 'lucide-react';
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/browser';
 import { supabase } from '../lib/supabaseClient';
 
 const Contact: React.FC = () => {

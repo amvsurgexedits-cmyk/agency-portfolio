@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@supabase/supabase-js": "^2.98.0",
-    "emailjs-com": "^3.2.0",
     "lucide-react": "^0.577.0",
     "mysql2": "^3.19.0",
     "react": "^19.2.0",
