@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../components/Button';
-import { Mail, Instagram, MapPin } from 'lucide-react';
+import { Mail, Instagram, MapPin, Phone } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { supabase } from '../lib/supabaseClient';
 
@@ -120,6 +120,17 @@ const Contact: React.FC = () => {
                                 <div>
                                     <h4 className="font-[SpaceGrotesk] font-bold text-[20px] text-white mb-1">Email Us</h4>
                                     <p className="font-[Inter] text-[#A0A0A0] hover:text-[#FF4D00] transition-colors"><a href="mailto:fraimiixstudios@gmail.com">fraimiixstudios@gmail.com</a></p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start space-x-6">
+                                <div className="w-12 h-12 rounded-full bg-[#1C1C1C] border border-[#333] flex items-center justify-center text-[#FF4D00] shrink-0">
+                                    <Phone size={24} />
+                                </div>
+                                <div>
+                                    <h4 className="font-[SpaceGrotesk] font-bold text-[20px] text-white mb-1">WhatsApp Us</h4>
+                                    <p className="font-[Inter] text-[#A0A0A0] hover:text-[#FF4D00] transition-colors"><a href="https://wa.me/919599325629?text=Hi%20Fraimiix%20Studios%21%20I%20am%20interested%20in%20starting%20a%20project." target="_blank" rel="noopener noreferrer">+91 95993 25629</a></p>
+                                    <p className="font-[Inter] text-[#A0A0A0] hover:text-[#FF4D00] transition-colors mt-1"><a href="https://wa.me/918076904698?text=Hi%20Fraimiix%20Studios%21%20I%20am%20interested%20in%20starting%20a%20project." target="_blank" rel="noopener noreferrer">+91 80769 04698</a></p>
                                 </div>
                             </div>
 

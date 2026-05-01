@@ -9,11 +9,8 @@ const Footer: React.FC = () => {
 
                     {/* Column 1: Brand */}
                     <div className="space-y-6">
-                        <Link to="/" className="flex items-center space-x-3 group">
-                            <img src="/logo.svg" alt="Fraimiix Logo" className="w-8 h-8" />
-                            <span className="text-[24px] font-[SpaceGrotesk] font-bold text-white tracking-widest">
-                                FRAIMIIX STUDIOS
-                            </span>
+                        <Link to="/" className="flex items-center group">
+                            <img src="/Nav%20logo.png" alt="Fraimiix Logo" className="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300" />
                         </Link>
                         <p className="text-[#A0A0A0] text-[16px] leading-[1.7] max-w-[280px]">
                             We build visual identities and digital experiences that sell. Premium design for modern brands.
@@ -51,7 +48,9 @@ const Footer: React.FC = () => {
                         <h4 className="text-white font-[SpaceGrotesk] font-medium text-[20px] mb-6">Contact Us</h4>
                         <ul className="space-y-4 text-[#A0A0A0]">
                             <li><a href="mailto:fraimiixstudios@gmail.com" className="hover:text-[#FF4D00] transition-colors">fraimiixstudios@gmail.com</a></li>
-                            <li><a href="https://www.instagram.com/fraimiix.studios_" target="_blank" rel="noopener noreferrer" className="hover:text-[#FF4D00] transition-colors">@fraimiix.studios_</a></li>
+                            <li><a href="https://wa.me/919599325629?text=Hi%20Fraimiix%20Studios%21%20I%20am%20interested%20in%20starting%20a%20project." target="_blank" rel="noopener noreferrer" className="hover:text-[#FF4D00] transition-colors">WhatsApp: +91 95993 25629</a></li>
+                            <li><a href="https://wa.me/918076904698?text=Hi%20Fraimiix%20Studios%21%20I%20am%20interested%20in%20starting%20a%20project." target="_blank" rel="noopener noreferrer" className="hover:text-[#FF4D00] transition-colors">WhatsApp: +91 80769 04698</a></li>
+                            <li><a href="https://www.instagram.com/fraimiix.studios_" target="_blank" rel="noopener noreferrer" className="hover:text-[#FF4D00] transition-colors">IG: @fraimiix.studios_</a></li>
                             <li>New Delhi,<br />India</li>
                         </ul>
                     </div>
