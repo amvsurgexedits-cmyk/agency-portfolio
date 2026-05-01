@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { Image, Users, Wrench, Plus, Trash2, Edit2, Instagram, Linkedin, Layers } from 'lucide-react';
+import { Image, Users, Wrench, Plus, Trash2, Edit2, Instagram, Linkedin, Layers, LayoutDashboard, Inbox } from 'lucide-react';
 import Button from '../components/Button';
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB limit for client-side check
@@ -8,7 +8,8 @@ const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB limit for client-side check
 const Admin: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [passphrase, setPassphrase] = useState('');
-    const [activeTab, setActiveTab] = useState<'tools' | 'portfolio' | 'team' | 'services'>('services');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'tools' | 'portfolio' | 'team' | 'services'>('dashboard');
+    const [dashboardData, setDashboardData] = useState<{ contacts: any[], portfolioCount: number }>({ contacts: [], portfolioCount: 0 });
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<any[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -50,6 +51,27 @@ const Admin: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         setError(null);
+
+        if (activeTab === 'dashboard') {
+            const { data: contactsResult, error: contactsError } = await supabase
+                .from('contacts')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            const { count: portfolioCount, error: portfolioError } = await supabase
+                .from('portfolio_items')
+                .select('*', { count: 'exact', head: true });
+
+            if (contactsError) setError(contactsError.message);
+            
+            setDashboardData({
+                contacts: contactsResult || [],
+                portfolioCount: portfolioCount || 0
+            });
+            setLoading(false);
+            return;
+        }
+
         let tableName = '';
         switch (activeTab) {
             case 'tools': tableName = 'tools'; break;
@@ -80,6 +102,7 @@ const Admin: React.FC = () => {
             case 'portfolio': tableName = 'portfolio_items'; break;
             case 'team': tableName = 'team_members'; break;
             case 'services': tableName = 'services'; break;
+            case 'dashboard': tableName = 'contacts'; break;
         }
         const { error } = await supabase.from(tableName).delete().eq('id', id);
         if (!error) fetchData();
@@ -248,6 +271,7 @@ const Admin: React.FC = () => {
 
                 <nav className="space-y-2">
                     {[
+                        { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
                         { id: 'services', label: 'Service Mockups', icon: Layers },
                         { id: 'portfolio', label: 'Portfolio Gallery', icon: Image },
                         { id: 'team', label: 'Agency Team', icon: Users },
@@ -270,17 +294,19 @@ const Admin: React.FC = () => {
             <div className="ml-[260px] p-12">
                 <div className="flex items-center justify-between mb-12">
                     <h2 className="font-[SpaceGrotesk] font-bold text-[32px] uppercase">
-                        {activeTab === 'services' ? 'Service Mockups' : activeTab === 'portfolio' ? 'Portfolio Hub' : activeTab === 'tools' ? 'Build Tools' : 'Our Team'}
+                        {activeTab === 'dashboard' ? 'Analytics Overview' : activeTab === 'services' ? 'Service Mockups' : activeTab === 'portfolio' ? 'Portfolio Hub' : activeTab === 'tools' ? 'Build Tools' : 'Our Team'}
                     </h2>
-                    <Button variant="primary" onClick={() => {
-                        setEditingId(null);
-                        setError(null);
-                        setNewItem({ label: '', value: '', client: '', year: new Date().getFullYear().toString(), linkedin: '', instagram: '', deliverables: '', iconName: 'Palette', display_location: 'portfolio', file: null, galleryFiles: [] });
-                        setIsModalOpen(true);
-                    }}>
-                        <Plus size={18} className="mr-2" />
-                        Add New
-                    </Button>
+                    {activeTab !== 'dashboard' && (
+                        <Button variant="primary" onClick={() => {
+                            setEditingId(null);
+                            setError(null);
+                            setNewItem({ label: '', value: '', client: '', year: new Date().getFullYear().toString(), linkedin: '', instagram: '', deliverables: '', iconName: 'Palette', display_location: 'portfolio', file: null, galleryFiles: [] });
+                            setIsModalOpen(true);
+                        }}>
+                            <Plus size={18} className="mr-2" />
+                            Add New
+                        </Button>
+                    )}
                 </div>
 
                 {error && (
@@ -292,6 +318,82 @@ const Admin: React.FC = () => {
 
                 {loading ? (
                     <div className="animate-pulse text-[#FF4D00]">Loading content...</div>
+                ) : activeTab === 'dashboard' ? (
+                    <div className="space-y-8">
+                        {/* Metrics Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-[#141414] border border-[#1C1C1C] p-6 rounded-[8px]">
+                                <h3 className="text-[#A0A0A0] text-[14px] uppercase tracking-wider font-bold mb-2">Total Client Leads</h3>
+                                <div className="flex items-center space-x-4">
+                                    <div className="w-12 h-12 rounded-full bg-[#1C1C1C] flex items-center justify-center text-[#FF4D00]">
+                                        <Inbox size={24} />
+                                    </div>
+                                    <span className="text-[32px] font-[SpaceGrotesk] font-bold">{dashboardData.contacts.length}</span>
+                                </div>
+                            </div>
+                            <div className="bg-[#141414] border border-[#1C1C1C] p-6 rounded-[8px]">
+                                <h3 className="text-[#A0A0A0] text-[14px] uppercase tracking-wider font-bold mb-2">Live Portfolio Projects</h3>
+                                <div className="flex items-center space-x-4">
+                                    <div className="w-12 h-12 rounded-full bg-[#1C1C1C] flex items-center justify-center text-[#FF4D00]">
+                                        <Image size={24} />
+                                    </div>
+                                    <span className="text-[32px] font-[SpaceGrotesk] font-bold">{dashboardData.portfolioCount}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Contacts Table */}
+                        <div className="bg-[#141414] border border-[#1C1C1C] rounded-[8px] overflow-hidden">
+                            <div className="p-6 border-b border-[#1C1C1C]">
+                                <h3 className="font-[SpaceGrotesk] font-bold text-[20px] uppercase tracking-widest">Recent Submissions</h3>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr className="bg-[#1C1C1C] text-[#A0A0A0] text-[12px] uppercase tracking-wider">
+                                            <th className="p-4 font-bold">Date</th>
+                                            <th className="p-4 font-bold">Name</th>
+                                            <th className="p-4 font-bold">Contact</th>
+                                            <th className="p-4 font-bold">Service</th>
+                                            <th className="p-4 font-bold">Message</th>
+                                            <th className="p-4 font-bold text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="text-[14px]">
+                                        {dashboardData.contacts.length > 0 ? (
+                                            dashboardData.contacts.map(contact => (
+                                                <tr key={contact.id} className="border-b border-[#1C1C1C] hover:bg-[#1A1A1A] transition-colors">
+                                                    <td className="p-4 text-[#888] whitespace-nowrap">{new Date(contact.created_at).toLocaleDateString()}</td>
+                                                    <td className="p-4 font-bold">{contact.name}</td>
+                                                    <td className="p-4">
+                                                        <div className="flex flex-col text-[#A0A0A0]">
+                                                            <a href={`mailto:${contact.email}`} className="hover:text-[#FF4D00] transition-colors">{contact.email}</a>
+                                                            <a href={`tel:${contact.phone}`} className="hover:text-[#FF4D00] transition-colors">{contact.phone}</a>
+                                                        </div>
+                                                    </td>
+                                                    <td className="p-4">
+                                                        <span className="bg-[#222] text-[#CCC] px-3 py-1 rounded-full text-[12px] capitalize">
+                                                            {contact.service?.replace('-', ' ')}
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-4 max-w-[300px] truncate text-[#A0A0A0]" title={contact.message}>{contact.message}</td>
+                                                    <td className="p-4 text-right">
+                                                        <button onClick={() => handleDelete(contact.id)} className="p-2 text-[#555] hover:text-[#FF4D00] transition-colors" title="Delete Lead">
+                                                            <Trash2 size={18} />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan={6} className="p-8 text-center text-[#666]">No leads yet. They'll appear here when someone fills out the contact form.</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 ) : (
                     <div className="grid grid-cols-1 gap-4">
                         {data.map((item) => (
