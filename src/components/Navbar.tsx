@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
             <nav className="fixed top-0 left-0 w-full z-[100] h-[72px] bg-[#0C0C0C]/85 backdrop-blur-[12px] border-b border-[#1C1C1C]">
                 <div className="container h-full flex items-center justify-between">
                     <Link to="/" className="flex items-center space-x-3 group">
-                        <img src="/logo.svg" alt="Fraimiix Logo" className="w-8 h-8 group-hover:scale-110 transition-transform duration-300" />
+                        <img src="/LOGO.png" alt="Fraimiix Logo" className="w-8 h-8 group-hover:scale-110 transition-transform duration-300" />
                         <span className="text-[18px] sm:text-[20px] md:text-[24px] font-[SpaceGrotesk] font-bold text-white tracking-widest uppercase truncate max-w-[200px] sm:max-w-none">
                             FRAIMIIX <span className="hidden sm:inline">STUDIOS</span>
                         </span>
