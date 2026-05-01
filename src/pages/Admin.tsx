@@ -61,6 +61,8 @@ const Admin: React.FC = () => {
             const { count: portfolioCount, error: portfolioError } = await supabase
                 .from('portfolio_items')
                 .select('*', { count: 'exact', head: true });
+                
+            if (portfolioError) console.error("Portfolio count error:", portfolioError);
 
             if (contactsError) setError(contactsError.message);
             
